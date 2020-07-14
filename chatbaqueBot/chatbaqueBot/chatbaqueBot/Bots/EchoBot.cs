@@ -16,14 +16,13 @@ namespace chatbaqueBot.Bots
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             string ask = turnContext.Activity.Text;
-            var replyText = "";
+            var replyText = $"echo: {ask}";
             if (ask.Contains("목적"))
             {
                 replyText = "저희는 피부타입 별 화장품 추천 서비스를 만들고 있습니다.";
             }
             else
             {
-                replyText = $"Echo: {ask}";
             }
             await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
         }

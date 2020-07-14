@@ -42,7 +42,7 @@ namespace chatbaqueBot.Bots
             }
         }
 
-        static string callpapago(Attachment img)
+        static string callClovaApi(Attachment img)
         {
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
             byte[] fileData = new System.Net.WebClient().DownloadData(img.ContentUrl);
@@ -118,11 +118,16 @@ namespace chatbaqueBot.Bots
             }
             else if (messageWithFileDownloadInfo)
             {
+                replyText = "ºÐ¼®Áß ...";
+                await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+
                 var inputMsg = ProcessInput(turnContext);
                 inputMsg.Attachments = new List<Attachment>() { GetInternetAttachment(turnContext) };
 
                 await turnContext.SendActivityAsync(inputMsg, cancellationToken);
 
+                replyText = callClovaApi(inputMsg.Attachments[0]);
+                await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
             }
 
         }

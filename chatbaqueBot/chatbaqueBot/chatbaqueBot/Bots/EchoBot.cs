@@ -43,6 +43,15 @@ namespace chatbaqueBot.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
                 }
             }
+            else if (messageWithFileDownloadInfo)
+            {
+                var inputMsg = ProcessInput(turnContext);
+                inputMsg.Attachments = new List<Attachment>() { GetInternetAttachment(turnContext) };
+
+                await turnContext.SendActivityAsync(inputMsg, cancellationToken);
+
+            }
+
         }
 
         private static async Task SendSuggestUploadPicAsync(ITurnContext turnContext, CancellationToken cancellationToken)
@@ -77,6 +86,26 @@ namespace chatbaqueBot.Bots
                 },
             };
             await turnContext.SendActivityAsync(reply, cancellationToken);
+        }
+
+        private static Activity ProcessInput(ITurnContext turnContext)
+        {
+            var activity = turnContext.Activity;
+            var reply = activity.CreateReply();
+
+            return reply;
+        }
+
+        private static Attachment GetInternetAttachment(ITurnContext turnContext)
+        {
+            // ContentUrl must be HTTPS.
+            var contenturl = turnContext.Activity.Attachments[0].ContentUrl;
+            return new Attachment
+            {
+                Name = @"Resources\architecture-resize.png",
+                ContentType = "image/png",
+                ContentUrl = contenturl,
+            };
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)

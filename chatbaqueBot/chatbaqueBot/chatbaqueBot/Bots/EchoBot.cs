@@ -42,6 +42,50 @@ namespace chatbaqueBot.Bots
             }
         }
 
+        static string callpapago(Attachment img)
+        {
+            string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
+            byte[] fileData = new System.Net.WebClient().DownloadData(img.ContentUrl);
+            string FilePath = img.ContentType;
+            string CRLF = "\r\n";
+            string postData = "--" + boundary + CRLF + "Content-Disposition: form-data; name=\"image\"; filename=\"";
+            postData += Path.GetFileName(FilePath) + "\"" + CRLF + "Content-Type: image/jpeg" + CRLF + CRLF;
+            string footer = CRLF + "--" + boundary + "--" + CRLF;
+
+            Stream DataStream = new MemoryStream();
+            DataStream.Write(Encoding.UTF8.GetBytes(postData), 0, Encoding.UTF8.GetByteCount(postData));
+            DataStream.Write(fileData, 0, fileData.Length);
+            DataStream.Write(Encoding.UTF8.GetBytes("\r\n"), 0, 2);
+            DataStream.Write(Encoding.UTF8.GetBytes(footer), 0, Encoding.UTF8.GetByteCount(footer));
+            DataStream.Position = 0;
+            byte[] formData = new byte[DataStream.Length];
+            DataStream.Read(formData, 0, formData.Length);
+            DataStream.Close();
+
+            //string url = "https://openapi.naver.com/v1/vision/celebrity"; // 유명인 얼굴 인식
+            string url = "https://openapi.naver.com/v1/vision/face"; // 얼굴 감지
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Headers.Add("X-Naver-Client-Id", "");
+            request.Headers.Add("X-Naver-Client-Secret", "");
+            request.Method = "POST";
+            request.ContentType = "multipart/form-data; boundary=" + boundary;
+            request.ContentLength = formData.Length;
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                requestStream.Write(formData, 0, formData.Length);
+                requestStream.Close();
+            }
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+            string text = reader.ReadToEnd();
+            stream.Close();
+            response.Close();
+            reader.Close();
+            Console.WriteLine(text);
+            return text;
+        }
+
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             string ask = turnContext.Activity.Text;

@@ -19,7 +19,10 @@ namespace chatbaqueBot.Bots
             var replyText = $"echo: {ask}";
             if (ask.Contains("목적"))
             {
-                replyText = "저희는 피부타입 별 화장품 추천 서비스를 만들고 있습니다.";
+                replyText = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
+                                  "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
+                                  "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다. " +
+                                  "\n\n1. 사진 업로드 \U0001F646 \n\n 2. 사진 싫어요 \U0001F645";
             }
             else
             {
@@ -29,12 +32,14 @@ namespace chatbaqueBot.Bots
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            var welcomeText = "안녕하세요, 챗바퀴 팀입니다. 저희는 피부타입 별 화장품 추천 서비스를 만들고 있습니다.";
+            var welcomeText1 = "안녕하세요 \n\n";
+            var welcomeText2 = "'목적'을 포함한 질문을 입력해주세요";
             foreach (var member in membersAdded)
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText, welcomeText), cancellationToken);
+                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText1, welcomeText1), cancellationToken);
+                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText2, welcomeText2), cancellationToken);
                 }
             }
         }

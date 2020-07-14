@@ -34,6 +34,10 @@ namespace chatbaqueBot.Bots
                     replyText = "사진 업로드를 선택하셨습니다. 사진을 첨부해주세요.";
                     await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
                 }
+                else if (ask.Equals("사진 싫어요"))
+                {
+                    await SendRequireEmotionAsync(turnContext, cancellationToken);
+                }
                 else
                 {
                     await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
@@ -51,6 +55,25 @@ namespace chatbaqueBot.Bots
                 {
                     new CardAction() { Title = "1. 사진 업로드 \U0001F646", Type = ActionTypes.ImBack, Value = "사진 업로드" },
                     new CardAction() { Title = "2. 사진 싫어요 \U0001F645", Type = ActionTypes.ImBack, Value = "사진 싫어요" },
+                },
+            };
+            await turnContext.SendActivityAsync(reply, cancellationToken);
+        }
+
+        private static async Task SendRequireEmotionAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            await turnContext.SendActivityAsync(MessageFactory.Text("\n\n사진이 부담스러우시다면 간단한 선택지를 통해 추천받으실 수 있습니다.\n\n", "\n\n사진이 부담스러우시다면 간단한 선택지를 통해 추천받으실 수 있습니다.\n\n"), cancellationToken);
+            var reply = MessageFactory.Text("현재 감정을 선택해주세요.\n\n");
+
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = new List<CardAction>()
+                {
+                    new CardAction() { Title = "1. 화남", Type = ActionTypes.ImBack, Value = "화남" },
+                    new CardAction() { Title = "2. 우울함", Type = ActionTypes.ImBack, Value = "우울함" },
+                    new CardAction() { Title = "3. 슬픔/센치함", Type = ActionTypes.ImBack, Value = "슬픔/센치함" },
+                    new CardAction() { Title = "4. 행복함", Type = ActionTypes.ImBack, Value = "행복함" },
+                    new CardAction() { Title = "5. 기분 업", Type = ActionTypes.ImBack, Value = "기분업" },
                 },
             };
             await turnContext.SendActivityAsync(reply, cancellationToken);

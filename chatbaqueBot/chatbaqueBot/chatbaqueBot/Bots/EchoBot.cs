@@ -8,11 +8,40 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
+using System;
+using System.Net;
+using System.Text;
+using System.IO;
 
 namespace chatbaqueBot.Bots
 {
     public class EchoBot : ActivityHandler
     {
+        static string callSearchAPI()
+        {
+            string query = "네이버 Open API"; // 검색할 문자열
+            string url = "https://openapi.naver.com/v1/search/blog?query=" + query; // 결과가 JSON 포맷
+            // string url = "https://openapi.naver.com/v1/search/blog.xml?query=" + query;  // 결과가 XML 포맷
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Headers.Add("X-Naver-Client-Id", ""); // 클라이언트 아이디
+            request.Headers.Add("X-Naver-Client-Secret", "");       // 클라이언트 시크릿
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string status = response.StatusCode.ToString();
+            if (status == "OK")
+            {
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+                string text = reader.ReadToEnd();
+                Console.WriteLine(text);
+                return text;
+            }
+            else
+            {
+                Console.WriteLine("Error 발생=" + status);
+                return "error";
+            }
+        }
+
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             string ask = turnContext.Activity.Text;

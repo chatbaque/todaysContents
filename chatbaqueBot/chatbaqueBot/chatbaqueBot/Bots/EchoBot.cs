@@ -17,17 +17,27 @@ namespace chatbaqueBot.Bots
         {
             string ask = turnContext.Activity.Text;
             var replyText = $"echo: {ask}";
-            if (ask.Contains("목적"))
+            bool messageWithFileDownloadInfo = turnContext.Activity.Attachments?[0].ContentType != null;
+
+            if (ask != null)
             {
-                replyText = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
-                                  "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
-                                  "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다. ";
-                await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
-                await SendSuggestUploadPicAsync(turnContext, cancellationToken);
-            }
-            else
-            {
-                await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                if (ask.Contains("목적"))
+                {
+                    replyText = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
+                                      "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
+                                      "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다. ";
+                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                    await SendSuggestUploadPicAsync(turnContext, cancellationToken);
+                }
+                else if (ask.Equals("사진 업로드"))
+                {
+                    replyText = "사진 업로드를 선택하셨습니다. 사진을 첨부해주세요.";
+                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                }
+                else
+                {
+                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                }
             }
         }
 

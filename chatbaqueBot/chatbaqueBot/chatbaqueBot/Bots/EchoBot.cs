@@ -21,13 +21,29 @@ namespace chatbaqueBot.Bots
             {
                 replyText = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
                                   "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
-                                  "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다. " +
-                                  "\n\n1. 사진 업로드 \U0001F646 \n\n 2. 사진 싫어요 \U0001F645";
+                                  "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다. ";
+                await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                await SendSuggestUploadPicAsync(turnContext, cancellationToken);
             }
             else
             {
+                await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
             }
-            await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+        }
+
+        private static async Task SendSuggestUploadPicAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            var reply = MessageFactory.Text("\n\n감정을 분석하기 위해서 얼굴 사진이 필요합니다. 사진을 등록하시겠습니까?\n\n");
+
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = new List<CardAction>()
+                {
+                    new CardAction() { Title = "1. 사진 업로드 \U0001F646", Type = ActionTypes.ImBack, Value = "사진 업로드" },
+                    new CardAction() { Title = "2. 사진 싫어요 \U0001F645", Type = ActionTypes.ImBack, Value = "사진 싫어요" },
+                },
+            };
+            await turnContext.SendActivityAsync(reply, cancellationToken);
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)

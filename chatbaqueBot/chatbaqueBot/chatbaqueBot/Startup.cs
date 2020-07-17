@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.BotBuilderSamples;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using chatbaqueBot.Bots;
 
 namespace chatbaqueBot
 {
@@ -33,7 +33,26 @@ namespace chatbaqueBot
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            services.AddTransient<IBot, EchoBot>();
+/*            services.AddTransient<IBot, EchoBot>();*/
+
+            // Create the storage we'll be using for User and Conversation state.
+            // (Memory is great for testing purposes - examples of implementing storage with
+            // Azure Blob Storage or Cosmos DB are below).
+            var storage = new MemoryStorage();
+            // Create the User state passing in the storage layer.
+            var userState = new UserState(storage);
+            services.AddSingleton(userState);
+
+            // Create the Conversation state passing in the storage layer.
+            var conversationState = new ConversationState(storage);
+            services.AddSingleton(conversationState);
+
+            // The Dialog that will be run by the bot.
+            services.AddSingleton<UserProfileDialog>();
+
+            // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
+            services.AddTransient<IBot, DialogBot<UserProfileDialog>>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

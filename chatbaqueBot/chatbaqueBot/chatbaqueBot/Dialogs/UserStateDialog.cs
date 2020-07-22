@@ -68,8 +68,12 @@ namespace Microsoft.BotBuilderSamples
             var choice = (FoundChoice)stepContext.Result;
             stepContext.Values["emotion"] = choice.Value;
 
-            string msg = $"{stepContext.Values["name"]}님은 현재 {stepContext.Values["emotion"]}을 느끼고 계시고, {stepContext.Values["age"]}살 입니다.\n\n\n분석중...\n\n";
+            string msg = $"{stepContext.Values["name"]}님은 현재 {stepContext.Values["age"]}살이며 {stepContext.Values["emotion"]}을 느끼고 계십니다.";
             await stepContext.Context.SendActivityAsync(MessageFactory.Text(msg), cancellationToken);
+
+            msg = $"분석중...";
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text(msg), cancellationToken);
+
             return await stepContext.ReplaceDialogAsync(nameof(SuggestContentsDialog), stepContext.Values, cancellationToken);
         }
 

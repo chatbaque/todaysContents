@@ -58,15 +58,15 @@ namespace Microsoft.BotBuilderSamples
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            var welcomeText1 = "안녕하세요 \n\n";
-            var welcomeText2 = "저희는 챗바퀴 팀입니다. '목적'이 들어간 문장을 입력해주시면 목적을 알려드립니다. 목적을 알고싶지 않으면 아무 단어를 입력해주세요.";
+            var welcomeText1 = "안녕하세요 \n\n저희는 챗바퀴 팀입니다.";
+            var welcomeText2 = "저희는 챗바퀴 팀입니다.";
             foreach (var member in membersAdded)
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
                     await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText1, welcomeText1), cancellationToken);
-                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText2, welcomeText2), cancellationToken);
-                }
+/*                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText2, welcomeText2), cancellationToken);
+*/                }
             }
         }
     }

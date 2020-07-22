@@ -85,10 +85,16 @@ namespace Microsoft.BotBuilderSamples
                         var a_element = li_element.LastChild;
                         var title = a_element.Attributes["title"].Value;
                         var url = a_element.Attributes["href"].Value;
-                        var div_elements = a_element.LastChild.Descendants("div");
+                        var img = "https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg";
+                        foreach (var img_element in a_element.Descendants("img"))
+                        {
+                            if (img_element.Attributes["src"] != null)
+                                img = (img_element.Attributes["src"].Value);
+                        }
+
                         string sub = "";
                         string info = "";
-                        foreach (var div_element in div_elements)
+                        foreach (var div_element in a_element.LastChild.Descendants("div"))
                         {
                             if(j%divCnt == 1)
                             {
@@ -106,7 +112,8 @@ namespace Microsoft.BotBuilderSamples
                                     title = title,
                                     url = url,
                                     sub = sub,
-                                    info = info
+                                    info = info,
+                                    img = img
                                     ));
                             }
                         }
@@ -132,14 +139,7 @@ namespace Microsoft.BotBuilderSamples
 
             foreach (Movie item in (List<Movie>)contents[theme])
             {
-                string imgUrl = "https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg";
-
-                HtmlAgilityPack.HtmlDocument img_doc = web.Load(item.url);
-                var img_div = img_doc.DocumentNode.SelectSingleNode("//div[@class ='css-ds7f62-PosterWithRankingInfoBlock e1svyhwg10']");
-                if (img_div.HasAttributes)
-                    imgUrl = (img_div.ChildNodes[2].ChildNodes[1].Attributes["src"].Value);
-
-                reply.Attachments.Add(GetHeroCard(item.title, item.sub ,item.info, item.url, imgUrl).ToAttachment());
+                reply.Attachments.Add(GetHeroCard(item.title, item.sub ,item.info, item.url, item.img).ToAttachment());
             }
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -170,13 +170,14 @@ namespace Microsoft.BotBuilderSamples
 
     public class Movie
     {
-        public string title, url, info, sub;
-        public Movie(string title, string url, string sub = "", string info = "")
+        public string title, url, info, sub, img;
+        public Movie(string title, string url, string sub = "", string info = "", string img = "")
         {
             this.title = title;
             this.url = "https://pedia.watcha.com"+url;
             this.sub = sub;
             this.info = info;
+            this.img = img;
         }
     }
 }

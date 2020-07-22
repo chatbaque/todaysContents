@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v2.1": {
       "chatbaqueBot/1.0.0": {
         "dependencies": {
+          "HtmlAgilityPack": "1.11.24",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.Bot.Builder.Dialogs": "4.9.3",
           "Microsoft.Bot.Builder.Integration.AspNet.Core": "4.9.2",
@@ -34,6 +35,17 @@
         },
         "compile": {
           "chatbaqueBot.dll": {}
+        }
+      },
+      "HtmlAgilityPack/1.11.24": {
+        "runtime": {
+          "lib/netstandard2.0/HtmlAgilityPack.dll": {
+            "assemblyVersion": "1.11.24.0",
+            "fileVersion": "1.11.24.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/HtmlAgilityPack.dll": {}
         }
       },
       "Microsoft.Bot.Builder/4.9.3": {
@@ -3421,6 +3433,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "HtmlAgilityPack/1.11.24": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DLcytINO8EfCdBgMGsaz8Tvdgu2Aewoo2XX7WfZuRG9cBQRtbm8JZ4/sMRtFvzehjdIDqubdlQb8TqNfjRMEWg==",
+      "path": "htmlagilitypack/1.11.24",
+      "hashPath": "htmlagilitypack.1.11.24.nupkg.sha512"
     },
     "Microsoft.Bot.Builder/4.9.3": {
       "type": "package",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj": {}
+    "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj": {
+    "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
+        "projectUniqueName": "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
         "projectName": "chatbaqueBot",
-        "projectPath": "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
+        "projectPath": "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
         "packagesPath": "C:\\Users\\yonnii\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\obj\\",
+        "outputPath": "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\yonnii\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,6 +38,10 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.11.24, )"
+            },
             "Microsoft.AspNetCore.App": {
               "suppressParent": "All",
               "target": "Package",

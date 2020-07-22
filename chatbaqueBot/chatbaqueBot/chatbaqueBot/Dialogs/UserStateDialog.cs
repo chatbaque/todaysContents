@@ -12,7 +12,7 @@ namespace Microsoft.BotBuilderSamples
     {
         private readonly string[] _emotionOptions = new string[]
         {
-            "슬픔", "분노", "우울", "등등",
+            "슬픔", "행복", "기분업", "우울",
         };
 
         public UserStateDialog()

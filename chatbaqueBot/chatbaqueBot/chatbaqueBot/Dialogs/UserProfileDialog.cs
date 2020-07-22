@@ -1,8 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -10,6 +14,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.BotBuilderSamples
 {
@@ -72,10 +77,10 @@ namespace Microsoft.BotBuilderSamples
                     new PromptOptions
                     {
                         Prompt = MessageFactory.Text("\n\n" +
-                        $"환영합니다. {(string)stepContext.Result}님." +
+                        $"환영합니다. {(string)stepContext.Result}님.\n" +
                         "감정을 분석하기 위해서 얼굴 사진이 필요합니다. 사진을 등록하시겠습니까?\n\n"),
                         Choices = ChoiceFactory.ToChoices(new List<string> { "1. 사진 업로드", "2. 사진 싫어요" }),
-                    }, cancellationToken);           
+                    }, cancellationToken);
         }
 
         private static async Task<DialogTurnResult> PictureStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -117,23 +122,28 @@ namespace Microsoft.BotBuilderSamples
 
         private async Task<DialogTurnResult> PresumeEmotionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("분석중..."), cancellationToken);
+
             stepContext.Values["picture"] = ((IList<Attachment>)stepContext.Result)?.FirstOrDefault();
-            string msg = $"{stepContext.Values["name"]}님의 나이는 {stepContext.Values["name"]}로 추정되며, 현재의 감정상태는 {stepContext.Values["name"]}입니다.";
+            stepContext.Values["emotion"] = callClovaApi(((IList<Attachment>)stepContext.Result)?.FirstOrDefault())[0];
+
+            stepContext.Values["age"] = callClovaApi(((IList<Attachment>)stepContext.Result)?.FirstOrDefault())[1];
+            string msg = $"{stepContext.Values["name"]}님의 나이는 {stepContext.Values["age"]}세로 추정되며, 현재의 감정상태는 \"{stepContext.Values["emotion"]}\"입니다.";
             await stepContext.Context.SendActivityAsync(
                 MessageFactory.Text(msg), cancellationToken);
+
             return await stepContext.PromptAsync(nameof(ConfirmPrompt),
                                 new PromptOptions
                                 {
                                     Prompt = MessageFactory.Text("\n\n해당 예측이 정확하다고 생각되면 계속 진행해주세요."),
                                 }, cancellationToken);
+
         }
 
         private async Task<DialogTurnResult> ConfirmPresumeStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if((bool)stepContext.Result)
+            if ((bool)stepContext.Result)
             {
-                stepContext.Values["emotion"] = "덤덤";
-                stepContext.Values["age"] = 20;
                 return await stepContext.ReplaceDialogAsync(nameof(SuggestContentsDialog), stepContext.Values, cancellationToken);
             }
             else
@@ -141,6 +151,7 @@ namespace Microsoft.BotBuilderSamples
                 return await stepContext.ReplaceDialogAsync(nameof(UserStateDialog), stepContext.Values, cancellationToken);
             }
         }
+
 
         private static async Task<bool> PicturePromptValidatorAsync(PromptValidatorContext<IList<Attachment>> promptContext, CancellationToken cancellationToken)
         {
@@ -175,6 +186,70 @@ namespace Microsoft.BotBuilderSamples
         {
             // This condition is our validation rule. You can also change the value at this point.
             return Task.FromResult(promptContext.Recognized.Succeeded && promptContext.Recognized.Value > 0 && promptContext.Recognized.Value < 150);
+        }
+
+        private static string[] callClovaApi(Attachment img)
+        {
+            string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
+            byte[] fileData = new System.Net.WebClient().DownloadData(img.ContentUrl);
+            string FilePath = img.ContentType;
+            string CRLF = "\r\n";
+            string postData = "--" + boundary + CRLF + "Content-Disposition: form-data; name=\"image\"; filename=\"";
+            postData += Path.GetFileName(FilePath) + "\"" + CRLF + "Content-Type: image/jpeg" + CRLF + CRLF;
+            string footer = CRLF + "--" + boundary + "--" + CRLF;
+
+            Stream DataStream = new MemoryStream();
+            DataStream.Write(Encoding.UTF8.GetBytes(postData), 0, Encoding.UTF8.GetByteCount(postData));
+            DataStream.Write(fileData, 0, fileData.Length);
+            DataStream.Write(Encoding.UTF8.GetBytes("\r\n"), 0, 2);
+            DataStream.Write(Encoding.UTF8.GetBytes(footer), 0, Encoding.UTF8.GetByteCount(footer));
+            DataStream.Position = 0;
+            byte[] formData = new byte[DataStream.Length];
+            DataStream.Read(formData, 0, formData.Length);
+            DataStream.Close();
+
+            //string url = "https://openapi.naver.com/v1/vision/celebrity"; // 유명인 얼굴 인식
+            string url = "https://openapi.naver.com/v1/vision/face"; // 얼굴 감지
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Headers.Add("X-Naver-Client-Id", "epY6owt321XZfTOurfMC");
+            request.Headers.Add("X-Naver-Client-Secret", "VrkRwSv4g8");
+            request.Method = "POST";
+            request.ContentType = "multipart/form-data; boundary=" + boundary;
+            request.ContentLength = formData.Length;
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                requestStream.Write(formData, 0, formData.Length);
+                requestStream.Close();
+            }
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+            string text = reader.ReadToEnd();
+            stream.Close();
+            response.Close();
+            reader.Close();
+
+
+            string[] json_result = new string[2];
+            JObject json_data = JObject.Parse(text);
+
+            json_result[0] = json_data["faces"][0]["emotion"]["value"].ToString();
+            if (json_result[0].Equals("angry") || json_result[0].Equals("disgust"))
+                json_result[0] = "화남";
+            else if (json_result[0].Equals("fear") || json_result[0].Equals("sad"))
+                json_result[0] = "슬픔/센치함";
+            else if (json_result[0].Equals("laugh") || json_result[0].Equals("smile"))
+                json_result[0] = "행복함";
+            else if (json_result[0].Equals("neutral") || json_result[0].Equals("talking"))
+                json_result[0] = "기분업";
+            else if (json_result[0].Equals("surprise"))
+                json_result[0] = "우울함";
+
+            json_result[1] = json_data["faces"][0]["age"]["value"].ToString();
+
+
+            return json_result;
         }
     }
 }

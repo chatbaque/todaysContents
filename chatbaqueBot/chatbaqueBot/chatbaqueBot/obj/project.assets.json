@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
+      "HtmlAgilityPack/1.11.24": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/HtmlAgilityPack.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/HtmlAgilityPack.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -4585,6 +4594,54 @@
     }
   },
   "libraries": {
+    "HtmlAgilityPack/1.11.24": {
+      "sha512": "DLcytINO8EfCdBgMGsaz8Tvdgu2Aewoo2XX7WfZuRG9cBQRtbm8JZ4/sMRtFvzehjdIDqubdlQb8TqNfjRMEWg==",
+      "type": "package",
+      "path": "htmlagilitypack/1.11.24",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "htmlagilitypack.1.11.24.nupkg.sha512",
+        "htmlagilitypack.nuspec",
+        "lib/Net35/HtmlAgilityPack.dll",
+        "lib/Net35/HtmlAgilityPack.pdb",
+        "lib/Net35/HtmlAgilityPack.xml",
+        "lib/Net40-client/HtmlAgilityPack.dll",
+        "lib/Net40-client/HtmlAgilityPack.pdb",
+        "lib/Net40-client/HtmlAgilityPack.xml",
+        "lib/Net40/HtmlAgilityPack.XML",
+        "lib/Net40/HtmlAgilityPack.dll",
+        "lib/Net40/HtmlAgilityPack.pdb",
+        "lib/Net45/HtmlAgilityPack.XML",
+        "lib/Net45/HtmlAgilityPack.dll",
+        "lib/Net45/HtmlAgilityPack.pdb",
+        "lib/NetCore45/HtmlAgilityPack.XML",
+        "lib/NetCore45/HtmlAgilityPack.dll",
+        "lib/NetCore45/HtmlAgilityPack.pdb",
+        "lib/netstandard1.3/HtmlAgilityPack.deps.json",
+        "lib/netstandard1.3/HtmlAgilityPack.dll",
+        "lib/netstandard1.3/HtmlAgilityPack.pdb",
+        "lib/netstandard1.3/HtmlAgilityPack.xml",
+        "lib/netstandard1.6/HtmlAgilityPack.deps.json",
+        "lib/netstandard1.6/HtmlAgilityPack.dll",
+        "lib/netstandard1.6/HtmlAgilityPack.pdb",
+        "lib/netstandard1.6/HtmlAgilityPack.xml",
+        "lib/netstandard2.0/HtmlAgilityPack.deps.json",
+        "lib/netstandard2.0/HtmlAgilityPack.dll",
+        "lib/netstandard2.0/HtmlAgilityPack.pdb",
+        "lib/netstandard2.0/HtmlAgilityPack.xml",
+        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.XML",
+        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
+        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
+        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.XML",
+        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
+        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
+        "lib/uap10.0/HtmlAgilityPack.XML",
+        "lib/uap10.0/HtmlAgilityPack.dll",
+        "lib/uap10.0/HtmlAgilityPack.pdb",
+        "lib/uap10.0/HtmlAgilityPack.pri"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "sha512": "owAlEIUZXWSnkK8Z1c+zR47A0X6ykF4XjbPok4lQKNuciUfHLGPd6QnI+rt/8KlQ17PmF+I4S3f+m+Qe4IvViw==",
       "type": "package",
@@ -12446,6 +12503,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "HtmlAgilityPack >= 1.11.24",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.Bot.Builder.Dialogs >= 4.9.3",
       "Microsoft.Bot.Builder.Integration.AspNet.Core >= 4.9.2",
@@ -12458,11 +12516,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
+      "projectUniqueName": "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
       "projectName": "chatbaqueBot",
-      "projectPath": "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
+      "projectPath": "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot.csproj",
       "packagesPath": "C:\\Users\\yonnii\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\yonnii\\Desktop\\4-1\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\obj\\",
+      "outputPath": "C:\\Users\\yonnii\\todaysContents\\chatbaqueBot\\chatbaqueBot\\chatbaqueBot\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\yonnii\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -12489,6 +12547,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "HtmlAgilityPack": {
+            "target": "Package",
+            "version": "[1.11.24, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",

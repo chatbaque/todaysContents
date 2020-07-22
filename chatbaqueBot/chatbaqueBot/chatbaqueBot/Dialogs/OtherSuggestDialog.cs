@@ -86,19 +86,26 @@ namespace Microsoft.BotBuilderSamples
                         var title = a_element.Attributes["title"].Value;
                         var url = a_element.Attributes["href"].Value;
                         var div_elements = a_element.LastChild.Descendants("div");
+                        string sub = "";
                         string info = "";
                         foreach (var div_element in div_elements)
                         {
-                            if(j%divCnt != 0)
+                            if(j%divCnt == 1)
+                            {
+                                sub = div_element.InnerText;
+                            }
+                            else if(j%divCnt != 0)
                             {
                                 info += div_element.InnerText + "\n\n";
                             }
+                            
 
                             if (j++ % divCnt == divCnt - 1)
                             {
                                 contentList.Add(new Movie(
                                     title = title,
                                     url = url,
+                                    sub = sub,
                                     info = info
                                     ));
                             }
@@ -132,7 +139,7 @@ namespace Microsoft.BotBuilderSamples
                 if (img_div.HasAttributes)
                     imgUrl = (img_div.ChildNodes[2].ChildNodes[1].Attributes["src"].Value);
 
-                reply.Attachments.Add(GetHeroCard(item.title, item.info, item.url, imgUrl).ToAttachment());
+                reply.Attachments.Add(GetHeroCard(item.title, item.sub ,item.info, item.url, imgUrl).ToAttachment());
             }
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -146,11 +153,12 @@ namespace Microsoft.BotBuilderSamples
         }
 
 
-        public static HeroCard GetHeroCard(string title, string year, string url, string img)
+        public static HeroCard GetHeroCard(string title, string sub ,string year, string url, string img)
         {
             var heroCard = new HeroCard
             {
                 Title = title,
+                Subtitle = sub,
                 Text = year,
                 Images = new List<CardImage> { new CardImage(img) },
                 Buttons = new List<CardAction> { new CardAction(ActionTypes.OpenUrl, "더보기", value: url) },
@@ -162,11 +170,12 @@ namespace Microsoft.BotBuilderSamples
 
     public class Movie
     {
-        public string title, url, info;
-        public Movie(string title, string url, string info = "")
+        public string title, url, info, sub;
+        public Movie(string title, string url, string sub = "", string info = "")
         {
             this.title = title;
             this.url = "https://pedia.watcha.com"+url;
+            this.sub = sub;
             this.info = info;
         }
     }

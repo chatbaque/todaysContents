@@ -48,7 +48,7 @@ namespace Microsoft.BotBuilderSamples
         {
             await stepContext.Context.SendActivityAsync(createContentsCard((string)stepContext.Values["emotion"]), cancellationToken);
 
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("서비스가 만족스러우셨나요? 별점은 큰 힘이 됩니다.") }, cancellationToken);
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("추천해드린 컨텐츠가 마음에 드시나요?") }, cancellationToken);
         }
 
 
@@ -86,7 +86,7 @@ namespace Microsoft.BotBuilderSamples
             reply.Text = $"감정 상태인 {emotion}에 따른 {emotion},,,";
             reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
             Random random_movie = new Random();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 int movie_idx = random_movie.Next(0, movie.Length - 1);
                 string[] movie_info = contents_list[movie_idx].Split(" ・ ");
@@ -96,7 +96,7 @@ namespace Microsoft.BotBuilderSamples
                 reply.Attachments.Add(GetHeroCard(title, year, country).ToAttachment());
 
             }
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 int book_idx = random_movie.Next(book_start_idx, book_start_idx + book.Length + 1);
                 string[] book_info = contents_list[book_idx].Split(" ・ ");
@@ -130,7 +130,7 @@ namespace Microsoft.BotBuilderSamples
             }
             else
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("사용해주셔서 감사합니다. 서비스를 다시 시작하길 원하시면 아무 글자를 입력해주세요."), cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("만족스러운 서비스를 제공하지 못하여 유감이네요... 아무 글자를 입력해주시면 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
                 return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
             }
 
@@ -139,7 +139,7 @@ namespace Microsoft.BotBuilderSamples
 
         private async Task<DialogTurnResult> StarStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("별점 감사합니다. 서비스를 다시 시작하길 원하시면 아무 글자를 입력해주세요."), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("저희 서비스를 사용해주셔서 감사합니다. 아무 글자를 입력해주시면, 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
 
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }

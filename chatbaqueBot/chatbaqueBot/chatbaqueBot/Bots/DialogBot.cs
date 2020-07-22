@@ -43,14 +43,14 @@ namespace Microsoft.BotBuilderSamples
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             string ask = turnContext.Activity.Text != null ? turnContext.Activity.Text : "";
-            if (ask.Contains("목적"))
+/*            if (ask.Contains("목적"))
             {
                 var replyText = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
                   "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
                   "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다.";
                 await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
             }
-            Logger.LogInformation("Running dialog with Message Activity.");
+            Logger.LogInformation("Running dialog with Message Activity.");*/
 
             // Run the Dialog with the new message Activity.
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);

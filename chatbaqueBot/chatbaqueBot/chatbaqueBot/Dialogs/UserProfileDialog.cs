@@ -54,12 +54,31 @@ namespace Microsoft.BotBuilderSamples
 
         private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("추천 서비스를 시작하시겠습니까?") }, cancellationToken);
+            var choices = new[] { "추천서비스 시작하기", "사용방법" };
+            var heroCard = new HeroCard
+            {
+                Title = "기분 맞춤형 컨텐츠 추천 서비스",
+                Subtitle = "by Chatbaque",
+                Text = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
+                        "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
+                        "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다.",
+                Images = new List<CardImage> { new CardImage("https://user-images.githubusercontent.com/33623107/87881702-f1fa1f80-ca35-11ea-98d4-1b9d7c4d6a5e.png") },
+                Buttons = choices.Select(choice => new CardAction(ActionTypes.ImBack, choice, value: choice)).ToList(),
+
+            };
+
+            var reply = MessageFactory.Attachment(heroCard.ToAttachment());
+            return await stepContext.PromptAsync(nameof(ChoicePrompt), new PromptOptions
+            {
+                Prompt = (Activity)MessageFactory.Attachment(heroCard.ToAttachment()),
+                Choices = ChoiceFactory.ToChoices(choices),
+            }, cancellationToken);
         }
 
         private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if ((bool)stepContext.Result)
+            var choice = (FoundChoice)stepContext.Result;
+            if (choice.Index == 0)
             {
                 return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("안녕하세요. 이름을 입력해주세요.") }, cancellationToken);
             }

@@ -41,6 +41,7 @@ namespace Microsoft.BotBuilderSamples
             // Add named dialogs to the DialogSet. These names are saved in the dialog state.
             AddDialog(new UserStateDialog());
             AddDialog(new HowtoDialog());
+            AddDialog(new OtherSuggestDialog());
             AddDialog(new SuggestContentsDialog());
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
@@ -55,7 +56,7 @@ namespace Microsoft.BotBuilderSamples
 
         private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var choices = new[] { "추천서비스 시작하기", "서비스 소개" };
+            var choices = new[] { "기분 맞춤형 컨텐츠 추천받기", "요즘 인기있는 컨텐츠 추천받기", "서비스 소개" };
             var heroCard = new HeroCard
             {
                 Title = "기분 맞춤형 컨텐츠 추천 서비스",
@@ -82,6 +83,10 @@ namespace Microsoft.BotBuilderSamples
             if (choice.Index == 0)
             {
                 return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("안녕하세요. 이름을 입력해주세요.") }, cancellationToken);
+            }
+            else if(choice.Index == 1)
+            {
+                return await stepContext.ReplaceDialogAsync(nameof(OtherSuggestDialog), null, cancellationToken);
             }
             else
             {

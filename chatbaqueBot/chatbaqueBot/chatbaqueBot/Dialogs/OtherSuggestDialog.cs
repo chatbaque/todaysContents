@@ -20,7 +20,6 @@ namespace Microsoft.BotBuilderSamples
                 {
                     SuggestThemeStepAsync,
                     ShowContentsStepAsync,
-                    EndStepAsync,
                 }));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
@@ -142,15 +141,9 @@ namespace Microsoft.BotBuilderSamples
                 reply.Attachments.Add(GetHeroCard(item.title, item.sub ,item.info, item.url, item.img).ToAttachment());
             }
             await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-            return await stepContext.NextAsync(cancellationToken: cancellationToken);
-        }
-
-        private async Task<DialogTurnResult> EndStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("저희 서비스를 사용해주셔서 감사합니다. 아무 글자를 입력해주시면, 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
-
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
+
 
 
         public static HeroCard GetHeroCard(string title, string sub ,string year, string url, string img)

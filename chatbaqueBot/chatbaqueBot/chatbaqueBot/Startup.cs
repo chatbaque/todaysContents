@@ -48,10 +48,10 @@ namespace chatbaqueBot
             services.AddSingleton(conversationState);
 
             // The Dialog that will be run by the bot.
-            services.AddSingleton<UserProfileDialog>();
+            services.AddSingleton<MainDialog>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            services.AddTransient<IBot, DialogBot<UserProfileDialog>>();
+            services.AddTransient<IBot, DialogBot<MainDialog>>();
 
         }
 

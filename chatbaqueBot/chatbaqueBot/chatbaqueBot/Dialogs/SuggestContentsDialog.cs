@@ -19,9 +19,6 @@ namespace Microsoft.BotBuilderSamples
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
                 {
                     SuggestStepAsync,
-                    ShowContentCardsStepAsync,
-                    ConfirmStarStepAsync,
-                    StarStepAsync
                 }));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
 
@@ -42,15 +39,13 @@ namespace Microsoft.BotBuilderSamples
                 "\n\n\n데이터를 수집하고 있습니다. 잠시만 기다려주세요. :)\n\n\n";
 
             await stepContext.Context.SendActivityAsync(MessageFactory.Text(msg), cancellationToken);
-            return await stepContext.NextAsync(null, cancellationToken);
-        }
 
-        private async Task<DialogTurnResult> ShowContentCardsStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
             await stepContext.Context.SendActivityAsync(createContentsCard((string)stepContext.Values["emotion"]), cancellationToken);
 
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("추천해드린 컨텐츠가 마음에 드시나요?") }, cancellationToken);
+            return await stepContext.EndDialogAsync(null, cancellationToken);
         }
+
+
 
 
         private static IMessageActivity createContentsCard(string emotion)
@@ -112,27 +107,7 @@ namespace Microsoft.BotBuilderSamples
         }
 
 
-        private async Task<DialogTurnResult> ConfirmStarStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            if ((bool)stepContext.Result)
-            {
-                return await stepContext.NextAsync(null, cancellationToken);
-            }
-            else
-            {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("만족스러운 서비스를 제공하지 못하여 유감이네요... 아무 글자를 입력해주시면 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
-                return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-            }
 
-
-        }
-
-        private async Task<DialogTurnResult> StarStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("저희 서비스를 사용해주셔서 감사합니다. 아무 글자를 입력해주시면, 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
-
-            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-        }
 
     }
 

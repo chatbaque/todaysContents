@@ -18,6 +18,7 @@ namespace Microsoft.BotBuilderSamples
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
                 {
                     SuggestStepAsync,
+                    ShowContentCardsStepAsync,
                     ConfirmStarStepAsync,
                     StarStepAsync
                 }));
@@ -40,13 +41,12 @@ namespace Microsoft.BotBuilderSamples
                 "\n\n\n추천 데이터\n\n\n";
 
             await stepContext.Context.SendActivityAsync(MessageFactory.Text(msg), cancellationToken);
-            await stepContext.Context.SendActivityAsync(createContentsCard((string)emotion), cancellationToken);
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("서비스가 만족스러우셨나요? 별점은 큰 힘이 됩니다.") }, cancellationToken);
+            return await stepContext.NextAsync(null, cancellationToken);
         }
 
         private async Task<DialogTurnResult> ShowContentCardsStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-
+            await stepContext.Context.SendActivityAsync(createContentsCard((string)stepContext.Values["emotion"]), cancellationToken);
 
             return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("서비스가 만족스러우셨나요? 별점은 큰 힘이 됩니다.") }, cancellationToken);
         }
@@ -83,8 +83,8 @@ namespace Microsoft.BotBuilderSamples
 
             var attachments = new List<Attachment>();
             var reply = MessageFactory.Attachment(attachments);
+            reply.Text = $"감정 상태인 {emotion}에 따른 {emotion},,,";
             reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
-            var msg = "";
             Random random_movie = new Random();
             for (int i = 0; i < 4; i++)
             {
@@ -121,7 +121,7 @@ namespace Microsoft.BotBuilderSamples
             return heroCard;
         }
 
-        
+
         private async Task<DialogTurnResult> ConfirmStarStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if ((bool)stepContext.Result)

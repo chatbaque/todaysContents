@@ -43,14 +43,14 @@ namespace Microsoft.BotBuilderSamples
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             string ask = turnContext.Activity.Text != null ? turnContext.Activity.Text : "";
-            if (ask.Contains("목적"))
+/*            if (ask.Contains("목적"))
             {
                 var replyText = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
                   "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
                   "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다.";
                 await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
             }
-            Logger.LogInformation("Running dialog with Message Activity.");
+            Logger.LogInformation("Running dialog with Message Activity.");*/
 
             // Run the Dialog with the new message Activity.
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
@@ -58,15 +58,15 @@ namespace Microsoft.BotBuilderSamples
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            var welcomeText1 = "안녕하세요 \n\n";
-            var welcomeText2 = "저희는 챗바퀴 팀입니다. '목적'이 들어간 문장을 입력해주시면 목적을 알려드립니다. 목적을 알고싶지 않으면 아무 단어를 입력해주세요.";
+            var welcomeText1 = "안녕하세요 \n\n저희는 챗바퀴 팀입니다.";
+            var welcomeText2 = "저희는 챗바퀴 팀입니다.";
             foreach (var member in membersAdded)
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
                     await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText1, welcomeText1), cancellationToken);
-                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText2, welcomeText2), cancellationToken);
-                }
+/*                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText2, welcomeText2), cancellationToken);
+*/                }
             }
         }
     }

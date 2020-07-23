@@ -30,7 +30,6 @@ namespace Microsoft.BotBuilderSamples
             // This array defines how the Waterfall will execute.
             var waterfallSteps = new WaterfallStep[]
             {
-                StartStepAsync,
                 NameStepAsync,
                 SuggestUploadStepAsync,
                 PictureStepAsync,
@@ -52,22 +51,9 @@ namespace Microsoft.BotBuilderSamples
             InitialDialogId = nameof(WaterfallDialog);
         }
 
-        private async Task<DialogTurnResult> StartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("추천 서비스를 시작하시겠습니까?") }, cancellationToken);
-        }
-
         private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if ((bool)stepContext.Result)
-            {
-                return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("안녕하세요. 이름을 입력해주세요.") }, cancellationToken);
-            }
-            else
-            {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("추천 서비스를 시작하길 원하시면 아무 글자를 입력해주세요."), cancellationToken);
-                return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-            }
+            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("이름을 입력해주세요.") }, cancellationToken);
         }
 
         private static async Task<DialogTurnResult> SuggestUploadStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -110,14 +96,6 @@ namespace Microsoft.BotBuilderSamples
 
                 return await stepContext.PromptAsync(nameof(AttachmentPrompt), promptOptions, cancellationToken);
             }
-        }
-
-        private async Task<DialogTurnResult> ConfirmStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            stepContext.Values["picture"] = ((IList<Attachment>)stepContext.Result)?.FirstOrDefault();
-
-            // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("이 사진이 맞나요?") }, cancellationToken);
         }
 
         private async Task<DialogTurnResult> PresumeEmotionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)

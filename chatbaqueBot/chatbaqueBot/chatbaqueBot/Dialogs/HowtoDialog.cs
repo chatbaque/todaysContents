@@ -11,6 +11,8 @@ namespace Microsoft.BotBuilderSamples
 {
     public class HowtoDialog : ComponentDialog
     {
+
+
         public HowtoDialog()
             : base(nameof(HowtoDialog))
         {

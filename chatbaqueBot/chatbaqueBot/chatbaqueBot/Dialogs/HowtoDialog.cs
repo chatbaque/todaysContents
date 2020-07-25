@@ -55,7 +55,7 @@ namespace Microsoft.BotBuilderSamples
             }
 
 
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("아무 글자를 입력해서 서비스를 시작해보세요 :)"));
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("서비스를 다시 시작하시려면 채팅을 입력해주세요. :)"), cancellationToken);
 
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }

@@ -24,7 +24,8 @@ namespace Microsoft.BotBuilderSamples
                     ServiceStepAsync,
                     FinalStepAsync,  
                     ConfirmStarStepAsync,
-                    StarStepAsync
+                    StarStepAsync,
+                    EndStepAsync
                 }));
 
             AddDialog(new UserProfileDialog(userState));
@@ -92,8 +93,8 @@ namespace Microsoft.BotBuilderSamples
             }
             else
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("만족스러운 서비스를 제공하지 못하여 유감이네요... 아무 글자를 입력해주시면 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
-                return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("만족스러운 서비스를 제공하지 못하여 유감이네요..."), cancellationToken);
+                return await stepContext.NextAsync(null, cancellationToken);
             }
 
 
@@ -101,7 +102,13 @@ namespace Microsoft.BotBuilderSamples
 
         private async Task<DialogTurnResult> StarStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("저희 서비스를 사용해주셔서 감사합니다. 아무 글자를 입력해주시면, 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("저희 서비스를 사용해주셔서 감사합니다."), cancellationToken);
+
+            return await stepContext.NextAsync(null, cancellationToken);
+        }
+        private async Task<DialogTurnResult> EndStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("서비스를 다시 시작하시려면 채팅을 입력해주세요. :)"), cancellationToken);
 
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }

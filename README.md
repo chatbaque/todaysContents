@@ -5,7 +5,7 @@ README
 ---
 영화를 보고싶지만 어떤 영화를 봐야할지 모르겠을 때, 
 '너의 기분은.' 에 물어보세요! :wink:
-<img src="https://user-images.githubusercontent.com/33623107/87881702-f1fa1f80-35-11ea-98d4-1b9d7c4d6a5e.png" width="50%"></img>
+<img src="https://user-images.githubusercontent.com/26960514/88455822-a91ded00-ceb3-11ea-9309-a139a3f9aa19.PNG" width="50%"></img>
 
 
 ##팀명 : 챗바퀴 (Chatbaque)
@@ -60,7 +60,7 @@ README
  <div style="float:left;">
   <img src="https://user-images.githubusercontent.com/26960514/88455448-54c53e00-ceb0-11ea-88df-f9aa7738fb88.PNG" width="50%"></img>
  </div>
-<div style="float:left;">
+<div style="float:right;">
   <img src="https://user-images.githubusercontent.com/26960514/88455589-825eb700-ceb1-11ea-9b33-a162c62eeb9b.PNG" width="50%"></img>
  </div>
 </div>

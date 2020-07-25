@@ -26,7 +26,7 @@ namespace Microsoft.BotBuilderSamples
                 {
                     AgeStepAsync,
                     EmotionStepAsync,
-                    ConfirmStepAsync
+                    GoToSuggestDStepAsync
                 }));
 
             InitialDialogId = nameof(WaterfallDialog);
@@ -63,7 +63,7 @@ namespace Microsoft.BotBuilderSamples
             return await stepContext.PromptAsync(nameof(ChoicePrompt), promptOptions, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> ConfirmStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> GoToSuggestDStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var choice = (FoundChoice)stepContext.Result;
             stepContext.Values["emotion"] = choice.Value;

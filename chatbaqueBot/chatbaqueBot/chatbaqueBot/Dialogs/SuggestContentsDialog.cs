@@ -35,7 +35,7 @@ namespace Microsoft.BotBuilderSamples
 
             var emotion = stepContext.Values["emotion"];
             var recommand_msg = "";
-            var msg = $"감정 상태인 {emotion}에 어울리는 컨텐츠를 추천해드릴게요!" + //감정에 따른 추천 메세지 case문같은거로 넣기만 하면됨
+            var msg = $"감정 상태인 {emotion}에 어울리는 컨텐츠를 추천해드릴게요!" +
                 "\n\n\n데이터를 수집하고 있습니다. 잠시만 기다려주세요. :)\n\n\n";
 
             await stepContext.Context.SendActivityAsync(MessageFactory.Text(msg), cancellationToken);
@@ -51,7 +51,16 @@ namespace Microsoft.BotBuilderSamples
         private static IMessageActivity createContentsCard(string emotion)
         {
             HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-            HtmlAgilityPack.HtmlDocument doc = web.Load("https://pedia.watcha.com/ko-KR/" + "search?query=" + emotion.ToString());
+            var query_emotion = "기분업";
+            if (emotion.Equals("슬픔/센치함"))
+                query_emotion = "슬픈";
+            else if (emotion.Equals("화남"))
+                query_emotion = "분노의";
+            else
+                query_emotion = emotion.ToString();
+
+
+            HtmlAgilityPack.HtmlDocument doc = web.Load("https://pedia.watcha.com/ko-KR/" + "search?query=" + query_emotion);
             string baseURL = "https://pedia.watcha.com";
             List<Contents> contentsList = new List<Contents>();
 
@@ -59,7 +68,7 @@ namespace Microsoft.BotBuilderSamples
             foreach (var item in doc.DocumentNode.SelectNodes("//li[@class = 'css-106b4k6-Self e3fgkal0']"))
             {
                 var a_element = item.FirstChild;
-                string url="";
+                string url = "";
                 if (a_element.Attributes["href"] != null)
                 {
                     url = baseURL + a_element.Attributes["href"].Value;
@@ -104,7 +113,7 @@ namespace Microsoft.BotBuilderSamples
             reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
             Random random_movie = new Random();
 
-            foreach(Contents item in contentsList)
+            foreach (Contents item in contentsList)
             {
                 reply.Attachments.Add(GetHeroCard(item.title, $"{item.info}  {item.type}", item.url, item.img).ToAttachment());
             }

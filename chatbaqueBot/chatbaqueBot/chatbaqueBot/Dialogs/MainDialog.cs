@@ -22,9 +22,10 @@ namespace Microsoft.BotBuilderSamples
                 {
                     IntroStepAsync,
                     ServiceStepAsync,
-                    FinalStepAsync,
+                    FinalStepAsync,  
                     ConfirmStarStepAsync,
-                    StarStepAsync
+                    StarStepAsync,
+                    EndStepAsync
                 }));
 
             AddDialog(new UserProfileDialog(userState));
@@ -37,6 +38,7 @@ namespace Microsoft.BotBuilderSamples
             InitialDialogId = nameof(WaterfallDialog);
         }
 
+        private string mainIMG = "https://user-images.githubusercontent.com/33623107/88452927-b334f100-ce9d-11ea-8079-8f238ca2d4b2.png";
 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -48,7 +50,7 @@ namespace Microsoft.BotBuilderSamples
                 Text = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
                         "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
                         "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다.",
-                Images = new List<CardImage> { new CardImage("https://user-images.githubusercontent.com/33623107/87881702-f1fa1f80-ca35-11ea-98d4-1b9d7c4d6a5e.png") },
+                Images = new List<CardImage> { new CardImage(mainIMG) },
                 Buttons = choices.Select(choice => new CardAction(ActionTypes.ImBack, choice, value: choice)).ToList(),
 
             };
@@ -91,8 +93,8 @@ namespace Microsoft.BotBuilderSamples
             }
             else
             {
-                await stepContext.Context.SendActivityAsync(MessageFactory.Text("만족스러운 서비스를 제공하지 못하여 유감이네요... 아무 글자를 입력해주시면 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
-                return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("만족스러운 서비스를 제공하지 못하여 유감이네요..."), cancellationToken);
+                return await stepContext.NextAsync(null, cancellationToken);
             }
 
 
@@ -100,7 +102,13 @@ namespace Microsoft.BotBuilderSamples
 
         private async Task<DialogTurnResult> StarStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync(MessageFactory.Text("저희 서비스를 사용해주셔서 감사합니다. 아무 글자를 입력해주시면, 서비스를 다시 시작하실 수 있습니다."), cancellationToken);
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("저희 서비스를 사용해주셔서 감사합니다."), cancellationToken);
+
+            return await stepContext.NextAsync(null, cancellationToken);
+        }
+        private async Task<DialogTurnResult> EndStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            await stepContext.Context.SendActivityAsync(MessageFactory.Text("서비스를 다시 시작하시려면 채팅을 입력해주세요. :)"), cancellationToken);
 
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }

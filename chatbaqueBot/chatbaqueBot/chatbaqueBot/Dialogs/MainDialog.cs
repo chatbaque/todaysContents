@@ -22,7 +22,7 @@ namespace Microsoft.BotBuilderSamples
                 {
                     IntroStepAsync,
                     ServiceStepAsync,
-                    FinalStepAsync,
+                    FinalStepAsync,  
                     ConfirmStarStepAsync,
                     StarStepAsync
                 }));
@@ -37,6 +37,7 @@ namespace Microsoft.BotBuilderSamples
             InitialDialogId = nameof(WaterfallDialog);
         }
 
+        private string mainIMG = "https://user-images.githubusercontent.com/33623107/88452927-b334f100-ce9d-11ea-8079-8f238ca2d4b2.png";
 
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -48,7 +49,7 @@ namespace Microsoft.BotBuilderSamples
                 Text = "안녕하세요 \n챗바퀴 팀입니다 \U0001F64C" +
                         "\n\n저희는 얼굴 인식을 통해 감정을 분석하여 " +
                         "\n\n 책, 영화, 음악 등의 문화 컨텐츠를 추천해주는 챗봇 서비스를 제공합니다.",
-                Images = new List<CardImage> { new CardImage("https://user-images.githubusercontent.com/33623107/87881702-f1fa1f80-ca35-11ea-98d4-1b9d7c4d6a5e.png") },
+                Images = new List<CardImage> { new CardImage(mainIMG) },
                 Buttons = choices.Select(choice => new CardAction(ActionTypes.ImBack, choice, value: choice)).ToList(),
 
             };

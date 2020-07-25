@@ -38,33 +38,42 @@ namespace Microsoft.BotBuilderSamples
         private async Task<DialogTurnResult> ShowMsgStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var choice = (FoundChoice)stepContext.Result;
-            string title;
-            string body;
+
             if (choice.Index == 0)
             {
-                title = "서비스 더 알아보기";
-                body = "" +
-                "저희는 사용자의 사진을 이용해서 감정을 분석하고, 그 감정에 어울리는 컨텐츠를 추천하는 서비스입니다!" +
-                "\n\n" +
-                "사진은 감정을 분석하기 위해서 일회적으로 사용되기 때문에 사진을 수집하지 않습니다." +
-                "\n\n" +
-                "하지만 사진을 등록하길 원하지 않는다면, 자신의 직접 입력할 수 있으니 걱정마세요. ;)";
+                string[] msg = { "https://user-images.githubusercontent.com/33623107/88454004-17a87e00-cea7-11ea-8978-e251bba00a9f.jpg",
+                };
+                await stepContext.Context.SendActivityAsync(CreateUsageCards(msg));
             }
             else
             {
-                title = "사용 방법";
-                body = "사용 방법 구구절절";
+                string[] msg = {
+                "https://user-images.githubusercontent.com/33623107/88454005-1a0ad800-cea7-11ea-8874-a6e8d912d87e.jpg",
+                "https://user-images.githubusercontent.com/33623107/88454006-1bd49b80-cea7-11ea-9cc7-0b702a9951a7.jpg"
+                };
+                await stepContext.Context.SendActivityAsync(CreateUsageCards(msg));
             }
 
-            var thumbnailCard = new ThumbnailCard
-            {
-                Title = title,
-                Text = body,
-            };
-            await stepContext.Context.SendActivityAsync(MessageFactory.Attachment(thumbnailCard.ToAttachment()));
+
             await stepContext.Context.SendActivityAsync(MessageFactory.Text("아무 글자를 입력해서 서비스를 시작해보세요 :)"));
 
             return await stepContext.EndDialogAsync(null, cancellationToken);
+        }
+
+        private static IMessageActivity CreateUsageCards(string[] msg)
+        {
+            var attachments = new List<Attachment>();
+            var reply = MessageFactory.Attachment(attachments);
+            reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+
+            foreach (string item in msg)
+            {
+                reply.Attachments.Add(new HeroCard {
+                    Images = new List<CardImage> { new CardImage(item) },
+                }.ToAttachment());
+            }
+
+            return reply;
         }
 
     }

@@ -2,6 +2,7 @@
 
 영화를 보고싶지만 어떤 영화를 봐야할지 모르겠을 때, 
 '너의 기분은.' 에 물어보세요! :wink:
+
 <img src="https://user-images.githubusercontent.com/33623107/88474848-851ae400-cf65-11ea-851e-684b73342a1f.png" width="50%"></img>
 
 

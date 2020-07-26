@@ -2,23 +2,23 @@ README
 
 
 # 너의 기분은.
----
+
 영화를 보고싶지만 어떤 영화를 봐야할지 모르겠을 때, 
 '너의 기분은.' 에 물어보세요! :wink:
 <img src="https://user-images.githubusercontent.com/26960514/88455822-a91ded00-ceb3-11ea-9309-a139a3f9aa19.PNG" width="50%"></img>
 
 
 ## 팀명 : 챗바퀴 (Chatbaque)
----
+
 다람쥐가 쳇바퀴를 돌며 굴러가듯 열심히 챗봇을 만들겠다는 의지를 담았습니다.
 
 ## 프로젝트 목적 
----
+
 어떤 영화를 봐야 할지 결정이 힘든 사람들을 위해 영화를 추천해줍니다.
 
 
 ## 주요 기능들
----
+
 * 카드를 사용해 높인 가독성
 * 오픈 API사용 ( 얼굴 표정 분석 )
 * 영화 사이트에서 정보 확인 ( 크롤링 사용 )
@@ -27,7 +27,7 @@ README
   
 
 ## 사용 방법 (Usage)
----
+
 ▶ url주소  https://chatbaque.github.io/chatbaqueBot/chatbaqueBot
 
 1.  챗봇을 시작하면 환영 메세지와 함께 서비스 종류가 뜹니다.
@@ -58,7 +58,7 @@ README
 
 
 ## 예상 결과 화면
----
+
 <div>
   <img align="left" src="https://user-images.githubusercontent.com/26960514/88455448-54c53e00-ceb0-11ea-88df-f9aa7738fb88.PNG" width="45%"></img>
   <img align="right" src="https://user-images.githubusercontent.com/26960514/88455589-825eb700-ceb1-11ea-9b33-a162c62eeb9b.PNG" width="45%"></img>

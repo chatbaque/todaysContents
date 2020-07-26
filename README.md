@@ -2,7 +2,7 @@
 
 영화를 보고싶지만 어떤 영화를 봐야할지 모르겠을 때, 
 '너의 기분은.' 에 물어보세요! :wink:
-<img src="https://user-images.githubusercontent.com/26960514/88455822-a91ded00-ceb3-11ea-9309-a139a3f9aa19.PNG" width="50%"></img>
+<img src="https://user-images.githubusercontent.com/33623107/88474848-851ae400-cf65-11ea-851e-684b73342a1f.png" width="50%"></img>
 
 
 ## 팀명 : 챗바퀴 (Chatbaque)

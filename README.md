@@ -26,7 +26,8 @@
 
 ## 사용 방법 (Usage)
 
-▶ url주소  https://chatbaque.github.io/chatbaqueBot/chatbaqueBot
+▶ url주소  https://chatbaque.github.io/chatbaqueBot/chatbaqueBot (현재 Azure 구독 라이센스 이슈로 인해 사용 불가)
+▶ 시연 영상 https://www.youtube.com/watch?v=zDeJ_o8EkVM
 
 1.  챗봇을 시작하면 환영 메세지와 함께 서비스 종류가 뜹니다.
 2.  기분에 따라 컨텐츠 추천을 받고 싶은 경우 '기분 맞춤형 컨텐츠 추천받기'를 선택합니다. </br>

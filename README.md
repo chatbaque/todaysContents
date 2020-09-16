@@ -1,3 +1,12 @@
+# KCC2020 Chatbot 경진대회
+
+한국정보과학회 x Microsoft x 디모아 공동개최의 Chatbot 경진대회
+
+최고창의상 수상
+
+![image](https://user-images.githubusercontent.com/33623107/93322986-ecab2c80-f84e-11ea-8365-642a620f5843.png)
+
+
 # 너의 기분은.
 
 영화를 보고싶지만 어떤 영화를 봐야할지 모르겠을 때, 
